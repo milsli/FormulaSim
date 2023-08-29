@@ -1,7 +1,10 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "supervisor.h"
 #include <QQmlContext>
+#include "supervisor.h"
+
+// using namespace Race;
+
 
 int main(int argc, char *argv[])
 {
@@ -10,24 +13,31 @@ int main(int argc, char *argv[])
 #endif
     QGuiApplication app(argc, argv);
 
-    QObject obj;
-    Supervisor *supervisor = new Supervisor(&obj);
+    qRegisterMetaType<QList<QString>>();
+
+    Supervisor *supervisor = new Supervisor;
+
     QQmlApplicationEngine engine;
-
-    QQmlContext *context = engine.rootContext();
-    context->setContextProperty("appCore", supervisor);
-
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-        &app, [url](QObject *obj, const QUrl &objUrl) {
-            if (!obj && url == objUrl)
-                QCoreApplication::exit(-1);
-        }, Qt::QueuedConnection);
-
-
-    //QObject::connect(supervisor, &Supervisor::bolidDefinition, &engine, &QQmlApplicationEngine::onSendToQml);
-
+                     &app, [url](QObject *obj, const QUrl &objUrl) {
+        if (!obj && url == objUrl)
+            QCoreApplication::exit(-1);
+    }, Qt::QueuedConnection);
+    engine.rootContext()->setContextProperty("supervisor", supervisor);
     engine.load(url);
+
+
+    QObject::connect(supervisor, SIGNAL(bolidDefinition(QVariant,QVariant,QVariant)), engine.rootObjects().at(0), SLOT(createBolid(QVariant,QVariant,QVariant)));
+    QObject::connect(supervisor, SIGNAL(moveBolid(QVariant,QVariant)), engine.rootObjects().at(0), SLOT(moveBolid(QVariant,QVariant)));
+    QObject::connect(supervisor, SIGNAL(newLap(QVariant,QVariant)), engine.rootObjects().at(0), SLOT(newLap(QVariant,QVariant)));
+
+    // QObject::connect(supervisor, SIGNAL(showRanking(QVector<QString>)), engine.rootObjects().at(0), SLOT(rr(QVariantList)));
+
+   // QObject::connect(engine.rootObjects().at(0), SIGNAL(startSignal()), supervisor, SLOT(onStartSignal()));
+    QObject::connect(engine.rootObjects().at(0), SIGNAL(startSignal()), supervisor, SIGNAL(startSignal()));
+
+    supervisor->readConfig();
 
 
     return app.exec();
