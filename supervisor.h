@@ -33,6 +33,7 @@ private:
     int laps_;
 
     QList<QVariant>  result_;
+    QList<QVariant>  finalResult_;
     QList<QVariant> crashed_;
 
 

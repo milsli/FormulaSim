@@ -51,11 +51,24 @@ Window {
 
     signal startSignal;
 
+    property bool start: true
+
     Button {
         text: " S  T  A  R  T "
-        onClicked: mainWindow.startSignal();
         x: 890
         y: 950
+
+        onClicked: {
+            if(start == true) {
+                text = "  S  T  O  P  ";
+                start = false;
+            } else {
+                text = " S  T  A  R  T ";
+                start = true
+            }
+
+            mainWindow.startSignal();
+        }
 
     }
 }
