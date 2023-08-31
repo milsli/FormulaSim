@@ -24,6 +24,16 @@ Window {
 
     property var bolidObject: [];
 
+    Image {
+        id: explosion
+        x: 20
+        y: 20
+        width: 60
+        height: 60
+
+        source: "explosion.jpg"
+    }
+
     function newLap(currentLap, laps)
     {
         if(currentLap <= laps)

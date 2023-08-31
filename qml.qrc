@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>Bolid.qml</file>
         <file>Ranking.qml</file>
+        <file>explosion.jpg</file>
     </qresource>
 </RCC>
