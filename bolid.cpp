@@ -10,8 +10,6 @@ Bolid::Bolid(QObject *parent) : QObject(parent)
   , start_(100)
   , speed_(100)
   , color_(QColor(0xff0000))
-  , x_(0)
-  , y_(45)
   , distance_(0)
   , currentLap_(1)
   , delayCounter_(0)
@@ -131,8 +129,6 @@ void Bolid::timerEvent(QTimerEvent *event)
                 distance_ += 120;
                 --currentLap_;
                 allowMove_ = false;
-                emit endOfRace(name_);
-//                killTimer(timerId_);
             }
             emit newLap(name_, currentLap_ + (allowMove_ ? 0 : 1));
         }

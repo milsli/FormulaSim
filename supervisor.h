@@ -33,17 +33,12 @@ private:
     int laps_;
 
     QList<QVariant>  result_;
-    QList<QVariant>  finalResult_;
     QList<QVariant> crashed_;
 
 
 signals:
-    // void bolidDefinition(QString, int, int, QColor);
-
-//    void showRanking(QVector<QString>);
     void showRanking();
     void crashedCarsSignal();
-
 
     void bolidDefinition(QVariant,QVariant,QVariant);
     void startSignal();

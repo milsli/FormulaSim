@@ -35,8 +35,6 @@ private:
     int start_ = 100;
     int speed_ = 100;
     QColor color_;
-    int x_ = 0;
-    int y_ = 45;
     int distance_;
     int laps_;
     int currentLap_;
@@ -53,7 +51,6 @@ signals:
     void moveBolid(QVariant,QVariant);
     void newLap(QString, int);
     void crash(QString);
-    void endOfRace(QString);
 
 public slots:
     void onStartSignal();

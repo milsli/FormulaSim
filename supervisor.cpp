@@ -56,7 +56,6 @@ void Supervisor::processLine(QString &line)
         connect(bolid, &Bolid::moveBolid, this, &Supervisor::onMoveBolid);
         connect(bolid, &Bolid::newLap, this, &Supervisor::onNewLap);
         connect(bolid, &Bolid::crash, this, &Supervisor::onCrash);
-        connect(bolid, &Bolid::endOfRace, [=](QString name){finalResult_.append(name);});
 
         bolid->configure(configList);
         bolids_.push_back(bolid);
@@ -92,23 +91,13 @@ void Supervisor::onNewLap(QString name, int currentLap)
 
     ++currentRaceLap_;
 
-
-    std::cout  << "  onNewLap  -  currentRaceLap_  " << currentRaceLap_ << "   currentLap   " << currentLap <<"\n";
-
     std::sort(bolids_.begin(), bolids_.end(), [=](Bolid *b1, Bolid *b2){return b1->getDistance() > b2->getDistance();});
 
-//    if(currentRaceLap_ < laps_)
-//    {
-        for(Bolid *bolid : bolids_)
+    for(Bolid *bolid : bolids_)
         result_.append(bolid->getName() + "  >  " + QString::number(bolid->getDistance()));
-//    }
-//    else
-//    {
-//        finalResult_.swap(result_);
-//    }
 
-        emit newLap(currentRaceLap_, laps_);
-        emit showRanking(); // wysyła result_
+    emit newLap(currentRaceLap_, laps_);
+    emit showRanking(); // wysyła result_
 
     if(currentRaceLap_ > laps_)
     {
@@ -116,7 +105,6 @@ void Supervisor::onNewLap(QString name, int currentLap)
         {
             bolid->killBolidTimer();
         }
-        std::cout  << "  killBolidTimer\n";
     }
 
 

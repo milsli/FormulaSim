@@ -32,9 +32,6 @@ int main(int argc, char *argv[])
     QObject::connect(supervisor, SIGNAL(moveBolid(QVariant,QVariant)), engine.rootObjects().at(0), SLOT(moveBolid(QVariant,QVariant)));
     QObject::connect(supervisor, SIGNAL(newLap(QVariant,QVariant)), engine.rootObjects().at(0), SLOT(newLap(QVariant,QVariant)));
 
-    // QObject::connect(supervisor, SIGNAL(showRanking(QVector<QString>)), engine.rootObjects().at(0), SLOT(rr(QVariantList)));
-
-   // QObject::connect(engine.rootObjects().at(0), SIGNAL(startSignal()), supervisor, SLOT(onStartSignal()));
     QObject::connect(engine.rootObjects().at(0), SIGNAL(startSignal()), supervisor, SIGNAL(startSignal()));
 
     supervisor->readConfig();
