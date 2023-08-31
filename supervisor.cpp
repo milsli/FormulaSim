@@ -92,20 +92,33 @@ void Supervisor::onNewLap(QString name, int currentLap)
 
     ++currentRaceLap_;
 
+
+    std::cout  << "  onNewLap  -  currentRaceLap_  " << currentRaceLap_ << "   currentLap   " << currentLap <<"\n";
+
     std::sort(bolids_.begin(), bolids_.end(), [=](Bolid *b1, Bolid *b2){return b1->getDistance() > b2->getDistance();});
 
-    if(currentRaceLap_ < laps_)
+//    if(currentRaceLap_ < laps_)
+//    {
+        for(Bolid *bolid : bolids_)
+        result_.append(bolid->getName() + "  >  " + QString::number(bolid->getDistance()));
+//    }
+//    else
+//    {
+//        finalResult_.swap(result_);
+//    }
+
+        emit newLap(currentRaceLap_, laps_);
+        emit showRanking(); // wysyła result_
+
+    if(currentRaceLap_ > laps_)
     {
         for(Bolid *bolid : bolids_)
-            result_.append(bolid->getName());
-    }
-    else
-    {
-        finalResult_.swap(result_);
+        {
+            bolid->killBolidTimer();
+        }
+        std::cout  << "  killBolidTimer\n";
     }
 
-    emit newLap(currentRaceLap_, laps_);
-    emit showRanking(); // wysyła result_
 
     result_.clear();
 }
@@ -113,7 +126,7 @@ void Supervisor::onNewLap(QString name, int currentLap)
 void Supervisor::onMoveBolid(QVariant bolidNumber, QVariant distance)
 {
     int maxDistance = LAP_DISTANCE * laps_;
-    int xDistance = static_cast<int>(1920 * distance.toInt() / ( 1.2 * maxDistance ));
+    int xDistance = static_cast<int>(1920 * distance.toInt() / ( 1.3 * maxDistance ));
 
     emit moveBolid(bolidNumber, xDistance);
 }

@@ -2,15 +2,11 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 
-// import QtQuick.Templates 2.15
-
-
 Window {
     visibility: "FullScreen"
     visible: true
     title: qsTr("Formula 1  Race Simulator")
     id: mainWindow
-
 
     TextField {
         id: lapsText
@@ -20,6 +16,7 @@ Window {
     }
 
     Ranking {
+        visible: false
         id: rankId
         standings: supervisor.rankingTable
         crashed: supervisor.crashedCars
@@ -29,8 +26,11 @@ Window {
 
     function newLap(currentLap, laps)
     {
-        lapsText.text = "Okrążenie " + currentLap + "/" + laps;
-        rankId.nrOkrazenia = currentLap;
+        if(currentLap <= laps)
+            lapsText.text = "Okrążenie " + currentLap + "/" + laps;
+        rankId.nrOkrazenia = currentLap - 1;
+        if(currentLap > 1)
+            rankId.visible = true;
     }
 
     function createBolid(nr, name, hue)
