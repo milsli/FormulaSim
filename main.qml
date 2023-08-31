@@ -50,7 +50,6 @@ Window {
     }
 
     signal startSignal;
-
     property bool start: true
 
     Button {
@@ -69,6 +68,5 @@ Window {
 
             mainWindow.startSignal();
         }
-
     }
 }

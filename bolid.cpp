@@ -15,6 +15,7 @@ Bolid::Bolid(QObject *parent) : QObject(parent)
   , delayCounter_(0)
   , suspended_(0)
   , failure_(0)
+  , driverAbility_(100)
   , allowMove_(true)
 {
     ++objectCounter;
@@ -26,7 +27,7 @@ void Bolid::configure(const QStringList argv)
 {
     for(int i = 0; i < argv.size(); ++i)
     {
-        if(argv[i].contains("-driver")) {
+        if(argv[i].contains("-name")) {
             name_ = argv[i + 1];
         }
         if(argv[i].contains("-start")) {
@@ -41,6 +42,9 @@ void Bolid::configure(const QStringList argv)
         }
         if(argv[i].contains("-failure")) {
             failure_ = argv[i + 1].toInt();
+        }
+        if(argv[i].contains("-driver")) {
+            driverAbility_ = argv[i + 1].toInt();
         }
     }
 
@@ -76,7 +80,6 @@ void Bolid::run()
     // distance_ += 50 + rand() % start_;
     // ewentualnie
     distance_ += static_cast<int>(((((rand() % 10) + 2) + 100) * start_) / 100);
-
     timerId_ = startTimer(100);
 }
 
@@ -85,7 +88,7 @@ void Bolid::fatum()
     if(!allowMove_)
         return;
 
-    int rnd = rand() % 10'000;
+    int rnd = rand() % (120 * driverAbility_);
 
     if(rnd < 90)                        // crash
     {
@@ -95,7 +98,7 @@ void Bolid::fatum()
     }
     else if(rnd > 550 && rnd < 1000)    // lost distance
     {
-        rnd = 5 + rand() % 12;
+        rnd = 5 + rand() % 10;
         delayCounter_ = rnd;
     }
 }

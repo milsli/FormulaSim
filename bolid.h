@@ -6,7 +6,7 @@
 #include <QColor>
 #include <QVariant>
 
-#define LAP_DISTANCE 2000
+#define LAP_DISTANCE 3500
 
 class Bolid : public QObject
 {
@@ -41,6 +41,7 @@ private:
     int delayCounter_;
     int suspended_;
     int failure_;
+    int driverAbility_;
     bool allowMove_;
     int bolidNumber_;
     int timerId_;

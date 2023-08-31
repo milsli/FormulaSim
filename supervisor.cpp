@@ -107,7 +107,6 @@ void Supervisor::onNewLap(QString name, int currentLap)
         }
     }
 
-
     result_.clear();
 }
 
