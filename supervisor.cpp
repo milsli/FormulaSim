@@ -120,7 +120,7 @@ void Supervisor::onMoveBolid(QVariant bolidNumber, QVariant distance)
     emit moveBolid(bolidNumber, xDistance);
 }
 
-void Supervisor::onCrash(QString name)
+void Supervisor::onCrash(QString name, QVariant bolidNumber)
 {
     auto it = std::find_if(bolids_.begin(), bolids_.end(), [=](Bolid *bolid){return bolid->getName() == name;});
 
@@ -131,10 +131,9 @@ void Supervisor::onCrash(QString name)
     bolids_.erase(it);
 
 
-
     crashed_.append(new CrashedCars(name, number));
 
-    emit crashedCarsSignal();
+    emit crashedCarsSignal(bolidNumber);
     emit crashedCarsSignalBis();
 }
 

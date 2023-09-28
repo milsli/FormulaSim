@@ -23,6 +23,8 @@ Window {
     }
 
     property var bolidObject: [];
+    property var crashedBolids: [];
+    property int  first: 80
 
     function newLap(currentLap, laps)
     {
@@ -32,7 +34,7 @@ Window {
         if(currentLap > 1)
             rankId.visible = true;
 
-
+        crashedBolids.forEach(e => bolidObject[e].fire = false)
     }
 
     function createBolid(nr, name, hue)
@@ -48,11 +50,34 @@ Window {
 
     function moveBolid(nr, x)
     {
-        bolidObject[nr].x = x;                
+        if((first - 66) < x)
+        {
+            first = x + 66;
+            line.x = first;
+        }
+        bolidObject[nr].x = x;
+    }
+
+    function onCrashedCar(nr)
+    {
+        bolidObject[nr].fire = true;
+        crashedBolids.push(nr);
     }
 
     signal startSignal;
     property bool start: true
+
+    Rectangle {
+        id: line
+        x: 80
+        y: 120
+
+
+        width: 1
+        height: 750
+
+        color: 'lightblue'
+    }
 
     Button {
         text: " S  T  A  R  T "

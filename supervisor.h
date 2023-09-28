@@ -70,7 +70,7 @@ private:
 
 signals:
     void showRanking();
-    void crashedCarsSignal();
+    void crashedCarsSignal(QVariant);
     void crashedCarsSignalBis();
 
     void bolidDefinition(QVariant,QVariant,QVariant);
@@ -79,11 +79,10 @@ signals:
     void newLap(QVariant,QVariant);
 
 
-
 private slots:
     void onNewLap(QString name, int currentLap);
     void onMoveBolid(QVariant bolidNumber, QVariant distance);
-    void onCrash(QString name);
+    void onCrash(QString name, QVariant bolidNumber);
 
 };
 #endif // SUPERVISOR_H

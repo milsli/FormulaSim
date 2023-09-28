@@ -52,7 +52,7 @@ signals:
     void bolidDefinition(QVariant,QVariant,QVariant);
     void moveBolid(QVariant,QVariant);
     void newLap(QString, int);
-    void crash(QString);
+    void crash(QString,QVariant);
 
 public slots:
     void onStartSignal();

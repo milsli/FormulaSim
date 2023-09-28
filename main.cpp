@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
     QObject::connect(supervisor, SIGNAL(bolidDefinition(QVariant,QVariant,QVariant)), engine.rootObjects().at(0), SLOT(createBolid(QVariant,QVariant,QVariant)));
     QObject::connect(supervisor, SIGNAL(moveBolid(QVariant,QVariant)), engine.rootObjects().at(0), SLOT(moveBolid(QVariant,QVariant)));
     QObject::connect(supervisor, SIGNAL(newLap(QVariant,QVariant)), engine.rootObjects().at(0), SLOT(newLap(QVariant,QVariant)));
+    QObject::connect(supervisor, SIGNAL(crashedCarsSignal(QVariant)), engine.rootObjects().at(0), SLOT(onCrashedCar(QVariant)));
 
     QObject::connect(engine.rootObjects().at(0), SIGNAL(startSignal()), supervisor, SIGNAL(startSignal()));
 
