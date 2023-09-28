@@ -107,6 +107,7 @@ void Supervisor::onNewLap(QString name, int currentLap)
         {
             bolid->killBolidTimer();
         }
+
     }
 
     result_.clear();
@@ -134,21 +135,26 @@ void Supervisor::onCrash(QString name, QVariant bolidNumber)
     crashed_.append(new CrashedCars(name, number));
 
     emit crashedCarsSignal(bolidNumber);
-    emit crashedCarsSignalBis();
+    //    emit crashedCarsSignalBis();
 }
 
-QQmlListProperty<CrashedCars> Supervisor::crashedCarsBis()
+void Supervisor::onNewRace()
 {
-    CrashedCars *c1 = new CrashedCars();
-    c1->name_ = "fir";
-    c1->number_ = 6;
-    crashedCarsBB.append(c1);
 
-
-    CrashedCars *c2 = new CrashedCars();
-    c2->name_ = "second";
-    c2->number_ = 67;
-    crashedCarsBB.append(c2);
-
-    return {this, &crashedCarsBB};
 }
+
+//QQmlListProperty<CrashedCars> Supervisor::crashedCarsBis()
+//{
+//    CrashedCars *c1 = new CrashedCars();
+//    c1->name_ = "fir";
+//    c1->number_ = 6;
+//    crashedCarsBB.append(c1);
+
+
+//    CrashedCars *c2 = new CrashedCars();
+//    c2->name_ = "second";
+//    c2->number_ = 67;
+//    crashedCarsBB.append(c2);
+
+//    return {this, &crashedCarsBB};
+//}

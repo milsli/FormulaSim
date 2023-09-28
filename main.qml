@@ -8,6 +8,16 @@ Window {
     title: qsTr("Formula 1  Race Simulator")
     id: mainWindow
 
+    signal newRace;
+    signal startSignal;
+    property int  state: 0
+
+    // states:
+    // 0 - start
+    // 1 - pauza
+    // 2 - nowy wyścig
+
+
     TextField {
         id: lapsText
         x: 800
@@ -30,6 +40,13 @@ Window {
     {
         if(currentLap <= laps)
             lapsText.text = "Okrążenie " + currentLap + "/" + laps;
+        else
+        {
+            startButton.text = "Nowy wyścig";
+            state = 2;
+            mainWindow.newRace();
+        }
+
         rankId.nrOkrazenia = currentLap - 1;
         if(currentLap > 1)
             rankId.visible = true;
@@ -48,6 +65,17 @@ Window {
         }
     }
 
+    function resetRace()
+    {
+        rankId.visible = false;
+        for(var i = 1; i < bolidObject.length; ++i)
+        {
+            bolidObject[i].x = 0;
+            bolidObject[i].y = 80 + 42 * i;
+        }
+        line.x = 70;
+    }
+
     function moveBolid(nr, x)
     {
         if((first - 66) < x)
@@ -64,36 +92,34 @@ Window {
         crashedBolids.push(nr);
     }
 
-    signal startSignal;
-    property bool start: true
-
     Rectangle {
         id: line
-        x: 80
+        x: 70
         y: 120
-
-
         width: 1
         height: 750
-
         color: 'lightblue'
     }
 
     Button {
+        id: startButton
         text: " S  T  A  R  T "
         x: 890
         y: 950
 
         onClicked: {
-            if(start == true) {
+            if(mainWindow.state == 0) {
                 text = "  S  T  O  P  ";
-                start = false;
-            } else {
+                state = 1;
+                mainWindow.startSignal();
+            } else if (mainWindow.state == 1){
                 text = " S  T  A  R  T ";
-                start = true
+                state = 0
+                mainWindow.startSignal();
+            } else if(mainWindow.state == 2) {
+                resetRace();
+                text = " S  T  A  R  T ";
             }
-
-            mainWindow.startSignal();
         }
     }
 }

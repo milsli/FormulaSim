@@ -40,7 +40,7 @@ class Supervisor : public QObject
     Q_PROPERTY(QList<QVariant> rankingTable READ rankingTable NOTIFY showRanking)
     Q_PROPERTY(QQmlListProperty<CrashedCars> crashedCars READ crashedCars NOTIFY crashedCarsSignal)
 
-    Q_PROPERTY(QQmlListProperty<CrashedCars> crashedCarsBis READ crashedCarsBis NOTIFY crashedCarsSignalBis)
+//    Q_PROPERTY(QQmlListProperty<CrashedCars> crashedCarsBis READ crashedCarsBis NOTIFY crashedCarsSignalBis)
 
 public:
     explicit Supervisor(QObject *parent = nullptr);
@@ -65,13 +65,13 @@ private:
     QList<QVariant>  result_;
     QList<CrashedCars*> crashed_;
 
-    QList<CrashedCars*> crashedCarsBB;
+   // QList<CrashedCars*> crashedCarsBB;
 
 
 signals:
     void showRanking();
     void crashedCarsSignal(QVariant);
-    void crashedCarsSignalBis();
+//    void crashedCarsSignalBis();
 
     void bolidDefinition(QVariant,QVariant,QVariant);
     void startSignal();
@@ -83,6 +83,7 @@ private slots:
     void onNewLap(QString name, int currentLap);
     void onMoveBolid(QVariant bolidNumber, QVariant distance);
     void onCrash(QString name, QVariant bolidNumber);
+    void onNewRace();
 
 };
 #endif // SUPERVISOR_H
