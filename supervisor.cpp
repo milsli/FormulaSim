@@ -44,7 +44,7 @@ QQmlListProperty<CrashedCars> Supervisor::crashedCars()
 
 void Supervisor::processLine(QString &line)
 {
-    if(line.trimmed()[0] == "#")
+    if(line.trimmed()[0] == '#')
         return;
 
     QStringList configList = line.split(" ");
