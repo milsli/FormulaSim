@@ -22,6 +22,7 @@ public:
     int getDistance() const {return distance_;}
     QString getName() {return name_;}
     void killBolidTimer();
+    int getBolidNumber() const {return bolidNumber_;}
 
 private:
     void run();

@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     qRegisterMetaType<QList<QString>>();
+    qmlRegisterAnonymousType<CrashedCars>("uri",6); //(<CrashedCars>(/*"uri", 0, 1, "CrashedCars"*/);
 
     Supervisor *supervisor = new Supervisor;
 

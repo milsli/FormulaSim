@@ -8,6 +8,7 @@ Item {
 
     property color hue: "red"
     property string  name: "FER01"
+    property bool fire: false
 
     Rectangle {
         width: 7 * parent.width / 10
@@ -66,4 +67,14 @@ Item {
         color: "black"
     }
 
+    Image {
+        id: explosion
+        visible: parent.fire
+        x: 15
+        y: 5
+        width: 40
+        height: 40
+
+        source: "explosion.jpg"
+    }
 }

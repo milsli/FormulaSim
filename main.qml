@@ -24,16 +24,6 @@ Window {
 
     property var bolidObject: [];
 
-    Image {
-        id: explosion
-        x: 20
-        y: 20
-        width: 60
-        height: 60
-
-        source: "explosion.jpg"
-    }
-
     function newLap(currentLap, laps)
     {
         if(currentLap <= laps)
@@ -41,6 +31,8 @@ Window {
         rankId.nrOkrazenia = currentLap - 1;
         if(currentLap > 1)
             rankId.visible = true;
+
+
     }
 
     function createBolid(nr, name, hue)
@@ -56,7 +48,7 @@ Window {
 
     function moveBolid(nr, x)
     {
-        bolidObject[nr].x = x;
+        bolidObject[nr].x = x;                
     }
 
     signal startSignal;

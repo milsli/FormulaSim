@@ -1,6 +1,7 @@
 #include "supervisor.h"
 #include <QFile>
 #include "bolid.h"
+#include "qqmllist.h"
 
 #include <iostream>
 
@@ -35,10 +36,11 @@ QList<QVariant> Supervisor::rankingTable()
     return result_;
 }
 
-QList<QVariant> Supervisor::crashedCars()
+QQmlListProperty<CrashedCars> Supervisor::crashedCars()
 {
-    return crashed_;
+    return {this, &crashed_};
 }
+
 
 void Supervisor::processLine(QString &line)
 {
@@ -121,7 +123,33 @@ void Supervisor::onMoveBolid(QVariant bolidNumber, QVariant distance)
 void Supervisor::onCrash(QString name)
 {
     auto it = std::find_if(bolids_.begin(), bolids_.end(), [=](Bolid *bolid){return bolid->getName() == name;});
+
+    if(it == bolids_.end())
+            return;
+
+    int number = (*it)->getBolidNumber();
     bolids_.erase(it);
-    crashed_.append(QVariant(name));
+
+
+
+    crashed_.append(new CrashedCars(name, number));
+
     emit crashedCarsSignal();
+    emit crashedCarsSignalBis();
+}
+
+QQmlListProperty<CrashedCars> Supervisor::crashedCarsBis()
+{
+    CrashedCars *c1 = new CrashedCars();
+    c1->name_ = "fir";
+    c1->number_ = 6;
+    crashedCarsBB.append(c1);
+
+
+    CrashedCars *c2 = new CrashedCars();
+    c2->name_ = "second";
+    c2->number_ = 67;
+    crashedCarsBB.append(c2);
+
+    return {this, &crashedCarsBB};
 }

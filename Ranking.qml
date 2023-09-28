@@ -33,7 +33,7 @@ Item {
 
                 Text {
                     required property int index
-                    text:  "  " + crashed[index] + "  DFN"
+                    text:  "  " + crashed[index].name + "  DFN"
                  }
             }
         }

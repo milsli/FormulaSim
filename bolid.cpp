@@ -88,9 +88,8 @@ void Bolid::fatum()
     if(!allowMove_)
         return;
 
-    int rnd = rand() % (125 * driverAbility_);
-
-    if(rnd < 90)                        // crash
+    int rnd = rand() % (130 * driverAbility_);
+    if(rnd < 80)                        // crash
     {
         rnd = rand() % 100;
         if(rnd < failure_)
