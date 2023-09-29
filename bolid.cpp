@@ -98,7 +98,7 @@ void Bolid::fatum()
         return;
 
     int rnd = rand() % (130 * driverAbility_);
-    if(rnd < 700)                        // crash
+    if(rnd < 100)                        // crash
     {
         rnd = rand() % 100;
         if(rnd < failure_)

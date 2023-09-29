@@ -6,7 +6,7 @@
 #include <QColor>
 #include <QVariant>
 
-#define LAP_DISTANCE 3000
+#define LAP_DISTANCE 3500
 
 class Bolid : public QObject
 {
