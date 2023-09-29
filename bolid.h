@@ -6,7 +6,7 @@
 #include <QColor>
 #include <QVariant>
 
-#define LAP_DISTANCE 3500
+#define LAP_DISTANCE 3000
 
 class Bolid : public QObject
 {
@@ -23,6 +23,8 @@ public:
     QString getName() {return name_;}
     void killBolidTimer();
     int getBolidNumber() const {return bolidNumber_;}
+    void resetDistance();
+//{distance_ = 0; suspended_ = 0; afterNew = true; delayCounter_=0;allowMove_=true;}
 
 private:
     void run();

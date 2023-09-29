@@ -50,7 +50,6 @@ public:
 
     QList<QVariant> rankingTable();
     QQmlListProperty<CrashedCars> crashedCars();
-    QQmlListProperty<CrashedCars> crashedCarsBis();
 
 private:
     void processLine(QString &line);
@@ -60,12 +59,12 @@ private:
     QString configPath_;
     int currentRaceLap_;
     std::vector<Bolid*> bolids_;
+    std::vector<Bolid*> crashedBolids_;
     int laps_;
 
     QList<QVariant>  result_;
     QList<CrashedCars*> crashed_;
 
-   // QList<CrashedCars*> crashedCarsBB;
 
 
 signals:

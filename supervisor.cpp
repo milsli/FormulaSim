@@ -107,7 +107,6 @@ void Supervisor::onNewLap(QString name, int currentLap)
         {
             bolid->killBolidTimer();
         }
-
     }
 
     result_.clear();
@@ -129,8 +128,8 @@ void Supervisor::onCrash(QString name, QVariant bolidNumber)
             return;
 
     int number = (*it)->getBolidNumber();
+    crashedBolids_.push_back(*it);
     bolids_.erase(it);
-
 
     crashed_.append(new CrashedCars(name, number));
 
@@ -140,7 +139,22 @@ void Supervisor::onCrash(QString name, QVariant bolidNumber)
 
 void Supervisor::onNewRace()
 {
+    currentRaceLap_ = 1;
+    result_.clear();
+    crashed_.clear();
 
+    for(auto it = crashedBolids_.begin(); it != crashedBolids_.end(); ++it)
+    {
+        bolids_.push_back(*it);
+    }
+
+    for(Bolid *bolid : bolids_)
+    {
+        bolid->resetDistance();
+    }
+
+    crashedBolids_.clear();
+    emit crashedCarsSignal(-1);
 }
 
 //QQmlListProperty<CrashedCars> Supervisor::crashedCarsBis()

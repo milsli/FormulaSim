@@ -75,6 +75,15 @@ void Bolid::killBolidTimer()
     killTimer(timerId_);
 }
 
+void Bolid::resetDistance()
+{
+    distance_ = 0;
+    currentLap_ = 1;
+    delayCounter_ = 0;
+    suspended_ = 0;
+    allowMove_=true;
+}
+
 void Bolid::run()
 {
     // distance_ += 50 + rand() % start_;
@@ -89,7 +98,7 @@ void Bolid::fatum()
         return;
 
     int rnd = rand() % (130 * driverAbility_);
-    if(rnd < 100)                        // crash
+    if(rnd < 700)                        // crash
     {
         rnd = rand() % 100;
         if(rnd < failure_)
@@ -106,7 +115,6 @@ void Bolid::timerEvent(QTimerEvent *event)
 {
 //    distance_ += 100 + rand() % speed_;
     // ewentualnie
-
     if(!(suspended_ % 2))
         return;
 
@@ -118,7 +126,6 @@ void Bolid::timerEvent(QTimerEvent *event)
     }
     else
         --delayCounter_;
-
 
     if(lapsBorders_[currentLap_ - 1] < distance_)
     {

@@ -35,16 +35,19 @@ Window {
     property var bolidObject: [];
     property var crashedBolids: [];
     property int  first: 80
+    property int  laps: 0
 
     function newLap(currentLap, laps)
     {
         if(currentLap <= laps)
+        {
             lapsText.text = "Okrążenie " + currentLap + "/" + laps;
+            mainWindow.laps = laps;
+        }
         else
         {
             startButton.text = "Nowy wyścig";
-            state = 2;
-            mainWindow.newRace();
+            mainWindow.state = 2;
         }
 
         rankId.nrOkrazenia = currentLap - 1;
@@ -68,12 +71,15 @@ Window {
     function resetRace()
     {
         rankId.visible = false;
+        mainWindow.newRace();
         for(var i = 1; i < bolidObject.length; ++i)
         {
             bolidObject[i].x = 0;
             bolidObject[i].y = 80 + 42 * i;
         }
         line.x = 70;
+        lapsText.text = "Okrążenie 1/" + laps;
+        first = 80;
     }
 
     function moveBolid(nr, x)
@@ -88,8 +94,11 @@ Window {
 
     function onCrashedCar(nr)
     {
-        bolidObject[nr].fire = true;
-        crashedBolids.push(nr);
+        if(nr >= 0)
+        {
+            bolidObject[nr].fire = true;
+            crashedBolids.push(nr);
+        }
     }
 
     Rectangle {
@@ -110,15 +119,18 @@ Window {
         onClicked: {
             if(mainWindow.state == 0) {
                 text = "  S  T  O  P  ";
-                state = 1;
+                mainWindow.state = 1;
+                console.log(text);
                 mainWindow.startSignal();
             } else if (mainWindow.state == 1){
                 text = " S  T  A  R  T ";
-                state = 0
+                mainWindow.state = 0
                 mainWindow.startSignal();
             } else if(mainWindow.state == 2) {
                 resetRace();
+                mainWindow.state = 0;
                 text = " S  T  A  R  T ";
+                crashedBolids.splice(0);
             }
         }
     }

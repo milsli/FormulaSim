@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     QObject::connect(supervisor, SIGNAL(crashedCarsSignal(QVariant)), engine.rootObjects().at(0), SLOT(onCrashedCar(QVariant)));
 
     QObject::connect(engine.rootObjects().at(0), SIGNAL(startSignal()), supervisor, SIGNAL(startSignal()));
-    QObject::connect(engine.rootObjects().at(0), SIGNAL(newRace()), supervisor, SIGNAL(onNewRace()));
+    QObject::connect(engine.rootObjects().at(0), SIGNAL(newRace()), supervisor, SLOT(onNewRace()));
 
     supervisor->readConfig();
 
