@@ -3,7 +3,7 @@ import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 
 Window {
-    // visibility: "FullScreen"
+    //visibility: "FullScreen"
     visible: true
     title: qsTr("Formula 1  Race Simulator")
     id: mainWindow
@@ -17,10 +17,17 @@ Window {
     // 1 - pauza
     // 2 - nowy wyścig
 
+    TextField {
+        id: raceText
+        x: 700
+        y: 40
+        width: 151
+        text: ""
+    }
 
     TextField {
         id: lapsText
-        x: 800
+        x: 850
         y: 40
         text: ""
     }
@@ -32,12 +39,22 @@ Window {
         crashed: supervisor.crashedCars
     }
 
+    Standings {
+
+    }
+
     property var bolidObject: [];
     property var crashedBolids: [];
     property int  first: 80
     property int  laps: 0
 
-    function newLap(currentLap, laps)
+    function onNewRace(name, allLaps)
+    {
+        raceText.text = "GP " + name;
+        laps = allLaps;
+    }
+
+    function newLap(currentLap)
     {
         if(currentLap <= laps)
         {

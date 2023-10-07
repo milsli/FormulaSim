@@ -4,8 +4,8 @@ import QtQuick.Controls 2.15
 Item {
     property int nrOkrazenia: 1
     x: 1650
-    y: 150
-    height: 600
+    y: 40
+    height: 200
 
     property variant standings: []
     property variant crashed: []

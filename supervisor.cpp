@@ -9,7 +9,7 @@ Supervisor::Supervisor(QObject *parent)
     : QObject{parent}
     , configPath_("../config/config.cfg")
     , currentRaceLap_(1)
-    , laps_(40)
+    , raceNumber_(1)
 {
 }
 
@@ -24,9 +24,9 @@ void Supervisor::readConfig()
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
 
-    while (!file.atEnd()) {
+    while (!file.atEnd())
+    {
         QString line = file.readLine();
-
         processLine(line);
     }
 }
@@ -34,6 +34,11 @@ void Supervisor::readConfig()
 QList<QVariant> Supervisor::rankingTable()
 {
     return result_;
+}
+
+QList<QVariant> Supervisor::classificationTable()
+{
+
 }
 
 QQmlListProperty<CrashedCars> Supervisor::crashedCars()
@@ -72,17 +77,29 @@ void Supervisor::setRaceConfig(const QStringList conf)
 {
     for(int i = 0; i < conf.size(); ++i)
     {
-        if(conf[i].contains("-round")) {
-            laps_ = conf[i + 1].toInt();
+        if(conf[i].contains("-name")) {
+            raceName_.append(conf[i + 1]);
+        }
+        else if(conf[i].contains("-lenght")) {
+            lapDistance_.append(conf[i + 1].toInt());
+        }
+        else if(conf[i].contains("-laps")) {
+            laps_.append(conf[i + 1].toInt());
         }
     }
 
+    setNewRaceForBolids(laps_[0], lapDistance_[0]);
+
+    emit newRace(raceName_[0], laps_[0]);
+    emit newLap(currentRaceLap_);
+}
+
+void Supervisor::setNewRaceForBolids(int laps, int lapDistance)
+{
     for(Bolid *b : bolids_)
     {
-        b->setLaps(laps_);
+        b->setRaceData(laps, lapDistance);
     }
-
-    emit newLap(currentRaceLap_, laps_);
 }
 
 void Supervisor::onNewLap(QString name, int currentLap)
@@ -98,10 +115,10 @@ void Supervisor::onNewLap(QString name, int currentLap)
     for(Bolid *bolid : bolids_)
         result_.append(bolid->getName() + "  >  " + QString::number(bolid->getDistance()));
 
-    emit newLap(currentRaceLap_, laps_);
+    emit newLap(currentRaceLap_);
     emit showRanking(); // wysyła result_
 
-    if(currentRaceLap_ > laps_)
+    if(currentRaceLap_ > laps_[raceNumber_ - 1])
     {
         for(Bolid *bolid : bolids_)
         {
@@ -114,7 +131,7 @@ void Supervisor::onNewLap(QString name, int currentLap)
 
 void Supervisor::onMoveBolid(QVariant bolidNumber, QVariant distance)
 {
-    int maxDistance = LAP_DISTANCE * laps_;
+    int maxDistance = lapDistance_[raceNumber_ - 1] * laps_[raceNumber_ - 1];
     int xDistance = static_cast<int>(1920 * distance.toInt() / ( 1.3 * maxDistance ));
 
     emit moveBolid(bolidNumber, xDistance);
@@ -134,7 +151,6 @@ void Supervisor::onCrash(QString name, QVariant bolidNumber)
     crashed_.append(new CrashedCars(name, number));
 
     emit crashedCarsSignal(bolidNumber);
-    //    emit crashedCarsSignalBis();
 }
 
 void Supervisor::onNewRace()
@@ -153,22 +169,11 @@ void Supervisor::onNewRace()
         bolid->resetDistance();
     }
 
+    setNewRaceForBolids(laps_[raceNumber_], lapDistance_[raceNumber_]);
+
     crashedBolids_.clear();
     emit crashedCarsSignal(-1);
+
+    emit newRace(raceName_[raceNumber_], laps_[raceNumber_]);
+    ++raceNumber_;
 }
-
-//QQmlListProperty<CrashedCars> Supervisor::crashedCarsBis()
-//{
-//    CrashedCars *c1 = new CrashedCars();
-//    c1->name_ = "fir";
-//    c1->number_ = 6;
-//    crashedCarsBB.append(c1);
-
-
-//    CrashedCars *c2 = new CrashedCars();
-//    c2->name_ = "second";
-//    c2->number_ = 67;
-//    crashedCarsBB.append(c2);
-
-//    return {this, &crashedCarsBB};
-//}

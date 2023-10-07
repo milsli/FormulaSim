@@ -17,6 +17,7 @@ Bolid::Bolid(QObject *parent) : QObject(parent)
   , failure_(0)
   , driverAbility_(100)
   , allowMove_(true)
+  , lapDistance_(3500)
 {
     ++objectCounter;
     bolidNumber_ = objectCounter;
@@ -59,14 +60,15 @@ int Bolid::getCurrentLap() const
     return currentLap_;
 }
 
-void Bolid::setLaps(int laps)
+void Bolid::setRaceData(int laps, int lapDistance)
 {
     laps_ = laps;
+    lapDistance_ = lapDistance;
 
     lapsBorders_.resize(laps_);
     for(int i = 0; i < laps_; ++i)
     {
-        lapsBorders_[i] = (i + 1) * LAP_DISTANCE;
+        lapsBorders_[i] = (i + 1) * lapDistance_;
     }
 }
 
@@ -98,11 +100,12 @@ void Bolid::fatum()
         return;
 
     int rnd = rand() % (130 * driverAbility_);
-    if(rnd < 100)                        // crash
+    if(rnd < 380)                        // crash
     {
         rnd = rand() % 100;
-        if(rnd < failure_)
+        if(rnd < failure_){
             distance_ = -1;
+        }
     }
     else if(rnd > 550 && rnd < 1000)    // lost distance
     {

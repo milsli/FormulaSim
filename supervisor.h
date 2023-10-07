@@ -38,6 +38,7 @@ class Supervisor : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QList<QVariant> rankingTable READ rankingTable NOTIFY showRanking)
+    Q_PROPERTY(QList<QVariant> classificationTable READ classificationTable NOTIFY showClassificationTable)
     Q_PROPERTY(QQmlListProperty<CrashedCars> crashedCars READ crashedCars NOTIFY crashedCarsSignal)
 
 //    Q_PROPERTY(QQmlListProperty<CrashedCars> crashedCarsBis READ crashedCarsBis NOTIFY crashedCarsSignalBis)
@@ -49,33 +50,39 @@ public:
     void readConfig();
 
     QList<QVariant> rankingTable();
+    QList<QVariant> classificationTable();
     QQmlListProperty<CrashedCars> crashedCars();
 
 private:
     void processLine(QString &line);
     void setRaceConfig(const QStringList conf);
+    void setNewRaceForBolids(int laps, int lapDistance);
 
 private:
     QString configPath_;
     int currentRaceLap_;
     std::vector<Bolid*> bolids_;
     std::vector<Bolid*> crashedBolids_;
-    int laps_;
+    QVector<QString> raceName_;
+    QVector<int> lapDistance_;
+    QVector<int> laps_;
 
     QList<QVariant>  result_;
     QList<CrashedCars*> crashed_;
 
-
+    int raceNumber_;
 
 signals:
     void showRanking();
+    void showClassificationTable();
     void crashedCarsSignal(QVariant);
 //    void crashedCarsSignalBis();
 
     void bolidDefinition(QVariant,QVariant,QVariant);
     void startSignal();
     void moveBolid(QVariant,QVariant);
-    void newLap(QVariant,QVariant);
+    void newRace(QVariant,QVariant);
+    void newLap(QVariant);
 
 
 private slots:
