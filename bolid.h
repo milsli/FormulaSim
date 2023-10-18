@@ -22,6 +22,9 @@ public:
     void killBolidTimer();
     int getBolidNumber() const {return bolidNumber_;}
     void resetDistance();
+    void addClassificationPoints(const int points);
+    int getClassificationPoints() {return classificationPoints_;};
+
 //{distance_ = 0; suspended_ = 0; afterNew = true; delayCounter_=0;allowMove_=true;}
 
 private:
@@ -48,6 +51,7 @@ private:
     int bolidNumber_;
     int timerId_;
     QVector<int> lapsBorders_;
+    int classificationPoints_;
 
 
 signals:

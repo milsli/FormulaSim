@@ -38,7 +38,7 @@ QList<QVariant> Supervisor::rankingTable()
 
 QList<QVariant> Supervisor::classificationTable()
 {
-
+    return calssification_;
 }
 
 QQmlListProperty<CrashedCars> Supervisor::crashedCars()
@@ -102,6 +102,63 @@ void Supervisor::setNewRaceForBolids(int laps, int lapDistance)
     }
 }
 
+void Supervisor::setClassification()
+{
+    std::sort(bolids_.begin(), bolids_.end(), [=](Bolid *b1, Bolid *b2){return b1->getDistance() > b2->getDistance();});
+
+    int counter = 1;
+    int points = 0;
+    for(Bolid *bolid : bolids_)
+    {
+        switch(counter)
+        {
+        case 1:
+            points = 25;
+            break;
+        case 2:
+            points = 20;
+            break;
+        case 3:
+            points = 15;
+            break;
+        case 4:
+            points = 10;
+            break;
+        case 5:
+            points = 8;
+            break;
+        case 6:
+            points = 6;
+            break;
+        case 7:
+            points = 5;
+            break;
+        case 8:
+            points = 3;
+            break;
+        case 9:
+            points = 2;
+            break;
+        case 10:
+            points = 1;
+            break;
+        default:
+            points = 0;
+        }
+        bolid->addClassificationPoints(points);
+
+        ++counter;
+    }
+
+    std::sort(bolids_.begin(), bolids_.end(), [=](Bolid *b1, Bolid *b2){return b1->getClassificationPoints() > b2->getClassificationPoints();});
+
+    for(Bolid *bolid : bolids_)
+    {
+        QString classItem = bolid->getName() + "    " + bolid->getClassificationPoints();
+        calssification_.append(classItem);
+    }
+}
+
 void Supervisor::onNewLap(QString name, int currentLap)
 {
     auto it = std::find_if_not(bolids_.begin(), bolids_.end(), [=](Bolid *bolid){return bolid->getCurrentLap() > currentRaceLap_;});
@@ -155,6 +212,8 @@ void Supervisor::onCrash(QString name, QVariant bolidNumber)
 
 void Supervisor::onNewRace()
 {
+    setClassification();
+
     currentRaceLap_ = 1;
     result_.clear();
     crashed_.clear();
@@ -172,8 +231,10 @@ void Supervisor::onNewRace()
     setNewRaceForBolids(laps_[raceNumber_], lapDistance_[raceNumber_]);
 
     crashedBolids_.clear();
-    emit crashedCarsSignal(-1);
 
+    emit crashedCarsSignal(-1);
     emit newRace(raceName_[raceNumber_], laps_[raceNumber_]);
+    emit showClassificationTable();
+
     ++raceNumber_;
 }

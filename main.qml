@@ -137,7 +137,6 @@ Window {
             if(mainWindow.state == 0) {
                 text = "  S  T  O  P  ";
                 mainWindow.state = 1;
-                console.log(text);
                 mainWindow.startSignal();
             } else if (mainWindow.state == 1){
                 text = " S  T  A  R  T ";

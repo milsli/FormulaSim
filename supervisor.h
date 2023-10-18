@@ -57,6 +57,7 @@ private:
     void processLine(QString &line);
     void setRaceConfig(const QStringList conf);
     void setNewRaceForBolids(int laps, int lapDistance);
+    void setClassification();
 
 private:
     QString configPath_;
@@ -69,6 +70,7 @@ private:
 
     QList<QVariant>  result_;
     QList<CrashedCars*> crashed_;
+    QList<QVariant> calssification_;
 
     int raceNumber_;
 

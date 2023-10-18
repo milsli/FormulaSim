@@ -18,6 +18,7 @@ Bolid::Bolid(QObject *parent) : QObject(parent)
   , driverAbility_(100)
   , allowMove_(true)
   , lapDistance_(3500)
+  , classificationPoints_(0)
 {
     ++objectCounter;
     bolidNumber_ = objectCounter;
@@ -84,6 +85,11 @@ void Bolid::resetDistance()
     delayCounter_ = 0;
     suspended_ = 0;
     allowMove_=true;
+}
+
+void Bolid::addClassificationPoints(const int points)
+{
+    classificationPoints_ += points;
 }
 
 void Bolid::run()
